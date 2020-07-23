@@ -1,7 +1,6 @@
 (ns metabase.api.database
   "/api/database endpoints."
-  (:require [clojure.string :as str]
-            [clojure.tools.logging :as log]
+  (:require [clojure.tools.logging :as log]
             [compojure.core :refer [DELETE GET POST PUT]]
             [metabase
              [config :as config]
@@ -306,14 +305,14 @@
   (db/select [Table :id :db_id :schema :name]
     {:where    [:and [:= :db_id db-id]
                      [:= :active true]
-                     [:like :%lower.name (str (str/lower-case prefix) "%")]
+                     [:like :%lower.name (str (u/lower-case-en prefix) "%")]
                      [:= :visibility_type nil]]
      :order-by [[:%lower.name :asc]]}))
 
 (defn- autocomplete-fields [db-id prefix]
   (db/select [Field :name :base_type :special_type :id :table_id [:table.name :table_name]]
     :metabase_field.active          true
-    :%lower.metabase_field.name     [:like (str (str/lower-case prefix) "%")]
+    :%lower.metabase_field.name     [:like (str (u/lower-case-en prefix) "%")]
     :metabase_field.visibility_type [:not-in ["sensitive" "retired"]]
     :table.db_id                    db-id
     {:order-by  [[:%lower.metabase_field.name :asc]
@@ -377,8 +376,8 @@
   "Get a list of all primary key `Fields` for `Database`."
   [id]
   (api/read-check Database id)
-  (sort-by (comp str/lower-case :name :table) (filter mi/can-read? (-> (database/pk-fields {:id id})
-                                                                       (hydrate :table)))))
+  (sort-by (comp u/lower-case-en :name :table) (filter mi/can-read? (-> (database/pk-fields {:id id})
+                                                                        (hydrate :table)))))
 
 
 ;;; ----------------------------------------------- POST /api/database -----------------------------------------------
@@ -674,7 +673,7 @@
     (->> (cards-virtual-tables)
          (map :schema)
          distinct
-         (sort-by str/lower-case))))
+         (sort-by u/lower-case-en))))
 
 
 ;;; ------------------------------------- GET /api/database/:id/schema/:schema ---------------------------------------

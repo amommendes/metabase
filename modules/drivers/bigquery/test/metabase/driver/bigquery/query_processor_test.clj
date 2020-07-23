@@ -1,7 +1,5 @@
 (ns metabase.driver.bigquery.query-processor-test
-  (:require [clojure
-             [string :as str]
-             [test :refer :all]]
+  (:require [clojure.test :refer :all]
             [honeysql
              [core :as hsql]
              [format :as hformat]]
@@ -549,7 +547,7 @@
                  ;; `timestamp_add` doesn't support `year` so it should cast a `datetime_trunc` instead
                  :type/DateTimeWithLocalTZ [:year (str "WHERE timestamp_trunc(ABC.datetimewithlocaltz, year)"
                                                        " = CAST(datetime_trunc(datetime_add(current_datetime(), INTERVAL -1 year), year) AS timestamp)")]}]
-          (mt/with-temp Field [f {:name (str/lower-case (name field-type)), :base_type field-type}]
+          (mt/with-temp Field [f {:name (u/lower-case-en (name field-type)), :base_type field-type}]
             (testing (format "%s field" field-type)
               (is (= [expected-sql]
                      (hsql/format {:where (sql.qp/->honeysql :bigquery [:=

@@ -7,7 +7,8 @@
              [helpers :as h]]
             [metabase
              [config :as config]
-             [driver :as driver]]
+             [driver :as driver]
+             [util :as u]]
             [metabase.driver.presto :as presto]
             [metabase.driver.sql.util :as sql.u]
             [metabase.driver.sql.util.unprepare :as unprepare]
@@ -118,7 +119,7 @@
 
 (defmethod tx/format-name :presto
   [_ s]
-  (str/lower-case s))
+  (u/lower-case-en s))
 
 (defmethod tx/aggregate-column-info :presto
   ([driver ag-type]

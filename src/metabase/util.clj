@@ -92,7 +92,7 @@
   ^Boolean [^String s]
   (boolean (when (string? s)
              (re-matches #"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
-                         (str/lower-case s)))))
+                         (lower-case-en s)))))
 
 (defn url?
   "Is `s` a valid HTTP/HTTPS URL string?"
@@ -113,10 +113,10 @@
 
    It can also be used to make sure a given function won't throw a `NullPointerException`:
 
-     (str/lower-case nil)            -> NullPointerException
-     (str/lower-case \"ABC\")        -> \"abc\"
-     (maybe? str/lower-case nil)     -> true
-     (maybe? str/lower-case \"ABC\") -> \"abc\"
+     (u/lower-case-en nil)            -> NullPointerException
+     (u/lower-case-en \"ABC\")        -> \"abc\"
+     (maybe? u/lower-case-en nil)     -> true
+     (maybe? u/lower-case-en \"ABC\") -> \"abc\"
 
    The latter use-case can be useful for things like sorting where some values in a collection
    might be `nil`:
@@ -389,7 +389,7 @@
    Optionally specify `max-length` which will truncate the slug after that many characters."
   (^String [^String s]
    (when (seq s)
-     (str/join (for [c (remove-diacritical-marks (str/lower-case s))]
+     (str/join (for [c (remove-diacritical-marks (lower-case-en s))]
                  (slugify-char c)))))
   (^String [s max-length]
    (str/join (take max-length (slugify s)))))
@@ -748,7 +748,7 @@
 (defn upper-case-en
   "Locale-agnostic version of `clojure.string/upper-case`.
   `clojure.string/upper-case` uses the default locale in conversions, turning
-  `ID` into `ıd`, in the Turkish locale. This function always uses the
+  `id` into `İD`, in the Turkish locale. This function always uses the
   `Locale/US` locale."
   [^CharSequence s]
   (.. s toString (toUpperCase (Locale/US))))

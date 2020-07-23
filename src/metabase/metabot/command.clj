@@ -77,7 +77,7 @@
   asynchronously, such as `show`."
   {:arglists '([command & args])}
   (fn [command & _]
-    (keyword (str/lower-case command))))
+    (keyword (u/lower-case-en command))))
 
 (defmethod command :default [command-name & _]
   (str
@@ -126,7 +126,7 @@
 
 (defn- cards-with-name [card-name]
   (db/select [Card :id :name]
-    :%lower.name [:like (str \% (str/lower-case card-name) \%)]
+    :%lower.name [:like (str \% (u/lower-case-en card-name) \%)]
     :archived false
     {:order-by [[:%lower.name :asc]]
      :limit    10}))

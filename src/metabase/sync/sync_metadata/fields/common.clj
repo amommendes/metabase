@@ -1,9 +1,9 @@
 (ns metabase.sync.sync-metadata.fields.common
   "Schemas and functions shared by different `metabase.sync.sync-metadata.fields.*` namespaces."
-  (:require [clojure.string :as str]
-            [metabase.sync
+  (:require [metabase.sync
              [interface :as i]
              [util :as sync-util]]
+            [metabase.util :as u]
             [metabase.util
              [i18n :refer [trs]]
              [schema :as su]]
@@ -39,7 +39,7 @@
   "Return the lower-cased 'canonical' name that should be used to uniquely identify `field` -- this is done to ignore
   case differences when syncing, e.g. we will consider `FIELD` and `field` to mean the same thing."
   [field]
-  (str/lower-case (:name field)))
+  (u/lower-case-en (:name field)))
 
 (s/defn special-type :- (s/maybe su/FieldType)
   "Determine a the appropriate `special-type` for a Field with `field-metadata`."

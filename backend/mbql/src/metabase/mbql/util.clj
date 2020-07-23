@@ -8,6 +8,7 @@
             [metabase.mbql.schema :as mbql.s]
             [metabase.mbql.schema.helpers :as mbql.s.helpers]
             [metabase.mbql.util.match :as mbql.match]
+            [metabase.util :as u]
             [metabase.util
              [i18n :refer [tru]]
              [schema :as su]]
@@ -25,7 +26,7 @@
   keyword."
   [token :- su/KeywordOrString]
   (-> (qualified-name token)
-      str/lower-case
+      u/lower-case-en
       (str/replace #"_" "-")
       keyword))
 

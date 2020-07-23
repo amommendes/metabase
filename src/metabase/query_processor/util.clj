@@ -5,7 +5,9 @@
              [hash :as hash]]
             [cheshire.core :as json]
             [clojure.string :as str]
-            [metabase.driver :as driver]
+            [metabase
+             [driver :as driver]
+             [util :as u]]
             [metabase.util.schema :as su]
             [schema.core :as s]))
 
@@ -58,7 +60,7 @@
   keyword."
   [token :- su/KeywordOrString]
   (-> (name token)
-      str/lower-case
+      u/lower-case-en
       (str/replace #"_" "-")
       keyword))
 

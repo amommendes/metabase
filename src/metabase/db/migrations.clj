@@ -168,14 +168,14 @@
 (defmigration ^{:author "camsaul", :added "0.20.0"} migrate-field-types
   (doseq [[old-type new-type] old-special-type->new-type]
     ;; migrate things like :timestamp_milliseconds -> :type/UNIXTimestampMilliseconds
-    (db/update-where! 'Field {:%lower.special_type (str/lower-case old-type)}
+    (db/update-where! 'Field {:%lower.special_type (u/lower-case-en old-type)}
       :special_type new-type)
     ;; migrate things like :UNIXTimestampMilliseconds -> :type/UNIXTimestampMilliseconds
     (db/update-where! 'Field {:special_type (name (keyword new-type))}
       :special_type new-type))
   (doseq [[old-type new-type] old-base-type->new-type]
     ;; migrate things like :DateTimeField -> :type/DateTime
-    (db/update-where! 'Field {:%lower.base_type (str/lower-case old-type)}
+    (db/update-where! 'Field {:%lower.base_type (u/lower-case-en old-type)}
       :base_type new-type)
     ;; migrate things like :DateTime -> :type/DateTime
     (db/update-where! 'Field {:base_type (name (keyword new-type))}

@@ -6,8 +6,7 @@
   superusers, and `metabot`, which is used to set permissions for the MetaBot. These groups are 'magic' in the sense
   that you cannot add users to them yourself, nor can you delete them; they are created automatically. You can,
   however, set permissions for them. "
-  (:require [clojure.string :as str]
-            [clojure.tools.logging :as log]
+  (:require [clojure.tools.logging :as log]
             [metabase.models.setting :as setting]
             [metabase.plugins.classloader :as classloader]
             [metabase.util :as u]
@@ -54,7 +53,7 @@
   ^Boolean [group-name]
   {:pre [((some-fn keyword? string?) group-name)]}
   (db/exists? PermissionsGroup
-    :%lower.name (str/lower-case (name group-name))))
+    :%lower.name (u/lower-case-en (name group-name))))
 
 (defn- check-name-not-already-taken
   [group-name]

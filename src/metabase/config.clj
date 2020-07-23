@@ -4,13 +4,14 @@
              [shell :as shell]]
             [clojure.string :as str]
             [environ.core :as environ]
-            [metabase.plugins.classloader :as classloader])
+            [metabase.plugins.classloader :as classloader]
+            [metabase.util :as u])
   (:import clojure.lang.Keyword
            java.util.UUID))
 
 (def ^Boolean is-windows?
   "Are we running on a Windows machine?"
-  (str/includes? (str/lower-case (System/getProperty "os.name")) "win"))
+  (str/includes? (u/lower-case-en (System/getProperty "os.name")) "win"))
 
 (def ^:private app-defaults
   "Global application defaults"

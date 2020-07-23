@@ -3,7 +3,8 @@
    https://stackoverflow.com/questions/8870261/how-to-split-text-without-spaces-into-list-of-words/11642687#11642687."
   ;; TODO - The code in this namespace is very hard to understand. We should clean it up and make it readable.
   (:require [clojure.java.io :as io]
-            [clojure.string :as str])
+            [clojure.string :as str]
+            [metabase.util :as u])
   (:import java.lang.Math
            java.util.Arrays))
 
@@ -95,7 +96,7 @@
 (defn infer-spaces
   "Splits a string with no spaces into words using magic" ; what a great explanation. TODO - make this code readable
   [input]
-  (let [s (str/lower-case input)
+  (let [s (u/lower-case-en input)
         cost (build-cost-array s)]
     (loop [i (float (count s))
            out []]

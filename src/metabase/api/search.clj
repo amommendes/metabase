@@ -1,6 +1,5 @@
 (ns metabase.api.search
-  (:require [clojure.string :as str]
-            [clojure.tools.logging :as log]
+  (:require [clojure.tools.logging :as log]
             [compojure.core :refer [GET]]
             [flatland.ordered.map :as ordered-map]
             [honeysql
@@ -47,7 +46,7 @@
 
 (def ^:private model->sort-position
   (into {} (map-indexed (fn [i model]
-                          [(str/lower-case (name model)) i])
+                          [(u/lower-case-en (name model)) i])
                         searchable-models)))
 
 (def ^:private SearchableModel
@@ -163,7 +162,7 @@
 
 (s/defn ^:private model->alias :- s/Keyword
   [model :- SearchableModel]
-  (keyword (str/lower-case (name model))))
+  (keyword (u/lower-case-en (name model))))
 
 (s/defn ^:private ->column-alias :- s/Keyword
   "Returns the column name. If the column is aliased, i.e. [`:original_name` `:aliased_name`], return the aliased
@@ -240,7 +239,7 @@
         search-string-clause (when (seq search-string)
                                [:like
                                 (hsql/call :lower (hsql/qualify (model->alias model) :name))
-                                (str "%" (str/lower-case search-string) "%")])]
+                                (str "%" (u/lower-case-en search-string) "%")])]
     (if search-string-clause
       [:and archived-clause search-string-clause]
       archived-clause)))

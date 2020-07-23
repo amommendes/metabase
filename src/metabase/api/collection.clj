@@ -4,8 +4,7 @@
   `:snippet` namespace, (called 'Snippet folders' in the UI). These namespaces are completely independent hierarchies.
   To use these endpoints for other Collections namespaces, you can pass the `?namespace=` parameter (e.g.
   `?namespace=snippet`)."
-  (:require [clojure.string :as str]
-            [compojure.core :refer [GET POST PUT]]
+  (:require [compojure.core :refer [GET POST PUT]]
             [metabase.api
              [card :as card-api]
              [common :as api]]
@@ -133,7 +132,7 @@
              item     (fetch-collection-children model-kw collection (assoc options :collection-namespace collection-namespace))]
          (assoc item :model model-kw))
        ;; sorting by name should be fine for now.
-       (sort-by (comp str/lower-case :name))))
+       (sort-by (comp u/lower-case-en :name))))
 
 (s/defn ^:private collection-detail
   "Add a standard set of details to `collection`, including things like `effective_location`.

@@ -217,7 +217,7 @@
    (let [request (doto (QueryRequest.)
                    (.setTimeoutMs (* query-timeout-seconds 1000))
                    ;; if the query contains a `#legacySQL` directive then use legacy SQL instead of standard SQL
-                   (.setUseLegacySql (str/includes? (str/lower-case sql) "#legacysql"))
+                   (.setUseLegacySql (str/includes? (u/lower-case-en sql) "#legacysql"))
                    (.setQuery sql)
                    (bigquery.params/set-parameters! parameters))]
      (google/execute (.query (.jobs client) project-id request)))))

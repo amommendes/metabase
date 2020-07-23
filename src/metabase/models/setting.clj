@@ -153,7 +153,7 @@
   "Get the env var corresponding to `setting-definition-or-name`.
    (This is used primarily for documentation purposes)."
   ^String [setting-definition-or-name]
-  (str "MB_" (str/upper-case (str/replace (setting-name setting-definition-or-name) "-" "_"))))
+  (str "MB_" (u/upper-case-en (str/replace (setting-name setting-definition-or-name) "-" "_"))))
 
 (defn env-var-value
   "Get the value of `setting-definition-or-name` from the corresponding env var, if any.
@@ -195,7 +195,7 @@
   "Interpret a `string-value` of a Setting as a boolean."
   [string-value]
   (when (seq string-value)
-    (case (str/lower-case string-value)
+    (case (u/lower-case-en string-value)
       "true"  true
       "false" false
       (throw (Exception.

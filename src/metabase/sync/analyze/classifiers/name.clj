@@ -2,7 +2,9 @@
   "Classifier that infers the special type of a Field based on its name and base type."
   (:require [clojure.string :as str]
             [clojure.tools.logging :as log]
-            [metabase.config :as config]
+            [metabase
+             [config :as config]
+             [util :as u]]
             [metabase.models.database :refer [Database]]
             [metabase.sync
              [interface :as i]
@@ -120,7 +122,7 @@
 (s/defn ^:private special-type-for-name-and-base-type :- (s/maybe su/FieldType)
   "If `name` and `base-type` matches a known pattern, return the `special_type` we should assign to it."
   [field-name :- su/NonBlankString, base-type :- su/FieldType]
-  (let [field-name (str/lower-case field-name)]
+  (let [field-name (u/lower-case-en field-name)]
     (some (fn [[name-pattern valid-base-types special-type]]
             (when (and (some (partial isa? base-type) valid-base-types)
                        (re-find name-pattern field-name))
@@ -177,7 +179,7 @@
 (s/defn infer-entity-type :- i/TableInstance
   "Classifer that infers the special type of a TABLE based on its name."
   [table :- i/TableInstance]
-  (let [table-name (-> table :name str/lower-case)]
+  (let [table-name (-> table :name u/lower-case-en)]
     (assoc table :entity_type (or (some (fn [[pattern type]]
                                           (when (re-find pattern table-name)
                                             type))

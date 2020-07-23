@@ -2,13 +2,13 @@
   "/api/email endpoints"
   (:require [clojure
              [data :as data]
-             [set :as set]
-             [string :as str]]
+             [set :as set]]
             [clojure.tools.logging :as log]
             [compojure.core :refer [DELETE POST PUT]]
             [metabase
              [config :as config]
-             [email :as email]]
+             [email :as email]
+             [util :as u]]
             [metabase.api.common :as api]
             [metabase.models.setting :as setting]
             [metabase.util
@@ -65,7 +65,7 @@
    (for [[k v] corrections]
      [k (tru "{0} was autocorrected to {1}"
              (name (mb-to-smtp-settings k))
-             (str/upper-case v))])))
+             (u/upper-case-en v))])))
 
 (api/defendpoint PUT "/"
   "Update multiple email Settings. You must be a superuser to do this."

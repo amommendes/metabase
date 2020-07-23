@@ -361,7 +361,7 @@
   [{:keys [base_type special_type name]}]
   (and (isa? base_type :type/Number)
        (or (#{:type/PK :type/FK} special_type)
-           (let [name (str/lower-case name)]
+           (let [name (u/lower-case-en name)]
              (or (= name "id")
                  (str/starts-with? name "id_")
                  (str/ends-with? name "_id"))))))
@@ -385,10 +385,10 @@
                                  (field-isa? field fieldspec))))))
    :named           (fn [name-pattern]
                       (comp (->> name-pattern
-                                 str/lower-case
+                                 u/lower-case-en
                                  re-pattern
                                  (partial re-find))
-                            str/lower-case
+                            u/lower-case-en
                             :name))
    :max-cardinality (fn [cardinality]
                       (fn [field]
@@ -571,7 +571,7 @@
   "Capitalize only the first letter in a given string."
   [s]
   (let [s (str s)]
-    (str (str/upper-case (subs s 0 1)) (subs s 1))))
+    (str (u/upper-case-en (subs s 0 1)) (subs s 1))))
 
 (defn- instantiate-metadata
   [x context bindings]

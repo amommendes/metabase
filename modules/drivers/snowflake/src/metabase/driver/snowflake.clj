@@ -1,9 +1,7 @@
 (ns metabase.driver.snowflake
   "Snowflake Driver."
-  (:require [clojure
-             [set :as set]
-             [string :as str]]
-            [clojure.java.jdbc :as jdbc]
+  (:require [clojure.java.jdbc :as jdbc]
+            [clojure.set :as set]
             [clojure.tools.logging :as log]
             [honeysql.core :as hsql]
             [java-time :as t]
@@ -262,7 +260,7 @@
 
 (defmethod driver/format-custom-field-name :snowflake
   [_ s]
-  (str/lower-case s))
+  (u/lower-case-en s))
 
 ;; See https://docs.snowflake.net/manuals/sql-reference/data-types-datetime.html#timestamp.
 (defmethod driver.common/current-db-time-date-formatters :snowflake
